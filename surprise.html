@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For You 🫠</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body {
+    width:100%; height:100%;
+    overflow:hidden;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: radial-gradient(circle at top, #0f1c3f, #020714 80%);
+  }
+
+  /* ---------- PASSWORD SCREEN ---------- */
+  #lockScreen {
+    position:fixed; inset:0;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    gap:22px;
+    z-index:10;
+    transition: opacity 1.2s ease, transform 1.2s ease;
+  }
+  #lockScreen.hide {
+    opacity:0; transform:scale(1.1);
+    pointer-events:none;
+  }
+  .lockTitle {
+    color:#ffd6ec;
+    font-size:1.4rem;
+    letter-spacing:1px;
+    text-align:center;
+    opacity:0.9;
+    animation: floaty 3s ease-in-out infinite;
+  }
+  @keyframes floaty {
+    0%,100% { transform:translateY(0); }
+    50% { transform:translateY(-6px); }
+  }
+  #pwInput {
+    padding:14px 18px;
+    font-size:1.3rem;
+    letter-spacing:6px;
+    text-align:center;
+    width:220px;
+    border:none;
+    border-radius:12px;
+    outline:none;
+    background:rgba(255,255,255,0.08);
+    color:#fff;
+    border:1px solid rgba(255,150,200,0.3);
+    box-shadow:0 0 25px rgba(255,105,180,0.2);
+  }
+  #pwInput::placeholder { color:rgba(255,255,255,0.4); letter-spacing:2px; }
+  #pwBtn {
+    padding:12px 30px;
+    border:none;
+    border-radius:30px;
+    background:linear-gradient(135deg,#ff6fa5,#1b3a6b);
+    color:white;
+    font-size:1rem;
+    cursor:pointer;
+    box-shadow:0 4px 20px rgba(255,105,165,0.35);
+    transition: transform 0.2s ease;
+  }
+  #pwBtn:hover { transform: scale(1.05); }
+  .shake { animation: shake 0.4s; }
+  @keyframes shake {
+    0%,100% { transform:translateX(0); }
+    25% { transform:translateX(-10px); }
+    75% { transform:translateX(10px); }
+  }
+  #hint { color:rgba(255,255,255,0.35); font-size:0.85rem; }
+
+  /* ---------- FLOWER SCENE ---------- */
+  #scene {
+    position:fixed; inset:0;
+    display:flex; align-items:flex-end; justify-content:center;
+    overflow:hidden;
+  }
+  .stars {
+    position:absolute; inset:0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, white, transparent),
+      radial-gradient(1px 1px at 70% 60%, white, transparent),
+      radial-gradient(1.5px 1.5px at 40% 80%, white, transparent),
+      radial-gradient(1px 1px at 85% 20%, white, transparent),
+      radial-gradient(1.5px 1.5px at 60% 10%, white, transparent),
+      radial-gradient(1px 1px at 10% 65%, white, transparent),
+      radial-gradient(1px 1px at 90% 85%, white, transparent);
+    opacity:0.6;
+    animation: twinkle 4s ease-in-out infinite alternate;
+  }
+  @keyframes twinkle { from{opacity:0.3;} to{opacity:0.8;} }
+
+  .ground {
+    position:absolute; bottom:0; left:0; right:0; height:14%;
+    background:linear-gradient(to top, #0d0620, transparent);
+  }
+
+  .flowerWrap {
+    position:relative;
+    display:flex; flex-direction:column; align-items:center;
+    margin-bottom:8%;
+  }
+
+  .stem {
+    width:6px;
+    height:0px;
+    background:linear-gradient(to top, #2e7d32, #4caf50);
+    border-radius:4px;
+    animation: growStem 1.6s ease-out forwards;
+    animation-delay: 0.3s;
+  }
+  @keyframes growStem {
+    to { height:180px; }
+  }
+
+  .leaf {
+    position:absolute;
+    width:34px; height:16px;
+    background:#43a047;
+    border-radius:50% 50% 50% 50% / 90% 90% 10% 10%;
+    opacity:0;
+    animation: leafIn 0.8s ease-out forwards;
+  }
+  .leafLeft { bottom:70px; left:-24px; transform:rotate(35deg); animation-delay:1.4s; }
+  .leafRight { bottom:100px; right:-24px; transform:rotate(-35deg) scaleX(-1); animation-delay:1.6s; }
+  @keyframes leafIn {
+    from { opacity:0; transform:scale(0) rotate(0deg); }
+    to   { opacity:1; }
+  }
+
+  .bud {
+    position:relative;
+    width:0; height:0;
+    margin-bottom:-4px;
+  }
+
+  .petal {
+    position:absolute;
+    bottom:0; left:50%;
+    width:26px; height:70px;
+    background:linear-gradient(to top, #ffd6ea, #ff8fc0);
+    border-radius:50% 50% 50% 50% / 65% 65% 35% 35%;
+    transform-origin:bottom center;
+    opacity:0;
+    box-shadow: inset 0 -10px 15px rgba(255,120,180,0.3);
+    animation: bloom 1.4s ease-out forwards;
+  }
+  @keyframes bloom {
+    0%   { opacity:0; transform: translateX(-50%) scale(0.15) rotate(var(--rot)); }
+    60%  { opacity:1; }
+    100% { opacity:1; transform: translateX(-50%) scale(1) rotate(var(--rot)) translateY(var(--spread)); }
+  }
+
+  .center {
+    position:absolute;
+    bottom:0; left:50%;
+    width:22px; height:22px;
+    background:radial-gradient(circle, #ffe066, #1b3a6b);
+    border-radius:50%;
+    transform:translate(-50%, 50%) scale(0);
+    animation: centerPop 0.6s ease-out forwards;
+    animation-delay:2.6s;
+    box-shadow:0 0 20px rgba(255,150,190,0.6);
+    z-index:2;
+  }
+  @keyframes centerPop {
+    to { transform:translate(-50%, 50%) scale(1); }
+  }
+
+  .message {
+    position:absolute;
+    top:12%;
+    left:50%;
+    transform:translate(-50%, -20px);
+    color:#ffe3f1;
+    text-align:center;
+    opacity:0;
+    text-shadow:0 0 20px rgba(255,110,180,0.6);
+    animation: msgIn 1.5s ease-out forwards;
+    animation-delay:3.2s;
+    width:90%;
+    max-width:500px;
+  }
+  @keyframes msgIn {
+    to { opacity:1; transform:translate(-50%, 0); }
+  }
+  .message h1 {
+    font-size:1.8rem;
+    font-weight:600;
+    margin-bottom:10px;
+  }
+  .message p {
+    font-size:1.3rem;
+    opacity:0.9;
+  }
+
+  .petal-fall {
+    position:absolute;
+    top:-20px;
+    font-size:18px;
+    opacity:0.8;
+    animation: fall linear infinite;
+    pointer-events:none;
+  }
+  @keyframes fall {
+    to { transform: translateY(110vh) rotate(360deg); }
+  }
+</style>
+</head>
+<body>
+
+  <div id="lockScreen">
+    <div class="lockTitle">🔒 this one's just for you...<br>enter the password</div>
+    <input type="password" id="pwInput" placeholder="• • • •" maxlength="10" inputmode="numeric">
+    <button id="pwBtn">Unlock</button>
+    <div id="hint">hint: you already know it 💭</div>
+  </div>
+
+  <div id="scene" style="display:none;">
+    <div class="stars"></div>
+    <div class="ground"></div>
+    <div class="flowerWrap">
+      <div class="bud" id="bud"></div>
+      <div class="stem" id="stem">
+        <div class="leaf leafLeft"></div>
+        <div class="leaf leafRight"></div>
+      </div>
+    </div>
+    <div class="message">
+      <h1>For you...</h1>
+    </div>
+  </div>
+
+<script>
+  const correctPassword = "7419";
+  const pwInput = document.getElementById('pwInput');
+  const pwBtn = document.getElementById('pwBtn');
+  const lockScreen = document.getElementById('lockScreen');
+  const scene = document.getElementById('scene');
+  const bud = document.getElementById('bud');
+
+  function tryUnlock() {
+    if (pwInput.value.trim() === correctPassword) {
+      lockScreen.classList.add('hide');
+      setTimeout(() => {
+        lockScreen.style.display = 'none';
+        scene.style.display = 'flex';
+        buildFlower();
+        spawnFallingPetals();
+      }, 1100);
+    } else {
+      lockScreen.querySelector('.lockTitle').classList.remove('shake');
+      void lockScreen.offsetWidth; // restart animation
+      lockScreen.querySelector('.lockTitle').classList.add('shake');
+      pwInput.value = '';
+      pwInput.placeholder = 'wrong password, try again 🥺';
+    }
+  }
+
+  pwBtn.addEventListener('click', tryUnlock);
+  pwInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') tryUnlock(); });
+
+  function buildFlower() {
+    const petalCount = 8;
+    for (let i = 0; i < petalCount; i++) {
+      const petal = document.createElement('div');
+      petal.className = 'petal';
+      const angle = (360 / petalCount) * i;
+      petal.style.setProperty('--rot', angle + 'deg');
+      petal.style.setProperty('--spread', -8 + 'px');
+      petal.style.animationDelay = (1.9 + i * 0.07) + 's';
+      bud.appendChild(petal);
+    }
+    const center = document.createElement('div');
+    center.className = 'center';
+    bud.appendChild(center);
+  }
+
+  function spawnFallingPetals() {
+    setInterval(() => {
+      const p = document.createElement('div');
+      p.className = 'petal-fall';
+      p.textContent = '🌸';
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.animationDuration = (6 + Math.random() * 6) + 's';
+      p.style.fontSize = (10 + Math.random() * 14) + 'px';
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 13000);
+    }, 900);
+  }
+</script>
+
+</body>
+</html>
