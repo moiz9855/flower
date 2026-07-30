@@ -2,227 +2,438 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>For You 🫠</title>
+<title>FOR YOU </title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
-  html, body {
-    width:100%; height:100%;
-    overflow:hidden;
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    background: radial-gradient(circle at top, #0f1c3f, #020714 80%);
+  
+  body, html {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+    background: #08020f;
+    color: #fff;
   }
+
+  /* ---------- AMBIENT HEARTBEAT BACKGROUND ---------- */
+  .bg-canvas {
+    position: fixed; inset: 0;
+    background: radial-gradient(circle at 50% 30%, #2b0826 0%, #0f0318 60%, #05010a 100%);
+    z-index: 0;
+  }
+
+  /* Heartbeat aura pulse */
+  .heartbeat-aura {
+    position: absolute;
+    top: 40%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(255, 40, 100, 0.35) 0%, rgba(180, 20, 90, 0.15) 50%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(50px);
+    animation: heartBeatPulse 1.4s ease-in-out infinite alternate;
+  }
+  @keyframes heartBeatPulse {
+    0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.3; }
+    50% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.6; }
+    100% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.45; }
+  }
+
+  .stars {
+    position: absolute; inset: 0;
+    background-image: 
+      radial-gradient(1.5px 1.5px at 15% 25%, rgba(255,255,255,0.9), transparent),
+      radial-gradient(1px 1px at 75% 15%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(2px 2px at 45% 75%, rgba(255,192,203,0.8), transparent),
+      radial-gradient(1.5px 1.5px at 85% 65%, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 25% 85%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(2px 2px at 60% 35%, rgba(255,105,180,0.9), transparent);
+    opacity: 0.7;
+    animation: twinkle 3s ease-in-out infinite alternate;
+  }
+  @keyframes twinkle { 0% { opacity: 0.3; } 100% { opacity: 0.85; } }
 
   /* ---------- PASSWORD SCREEN ---------- */
   #lockScreen {
-    position:fixed; inset:0;
-    display:flex; flex-direction:column;
-    align-items:center; justify-content:center;
-    gap:22px;
-    z-index:10;
-    transition: opacity 1.2s ease, transform 1.2s ease;
+    position: fixed; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    z-index: 10;
+    padding: 20px;
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
   #lockScreen.hide {
-    opacity:0; transform:scale(1.1);
-    pointer-events:none;
+    opacity: 0; 
+    transform: scale(1.15) translateY(-30px);
+    pointer-events: none;
   }
-  .lockTitle {
-    color:#ffd6ec;
-    font-size:1.4rem;
-    letter-spacing:1px;
-    text-align:center;
-    opacity:0.9;
-    animation: floaty 3s ease-in-out infinite;
-  }
-  @keyframes floaty {
-    0%,100% { transform:translateY(0); }
-    50% { transform:translateY(-6px); }
-  }
-  #pwInput {
-    padding:14px 18px;
-    font-size:1.3rem;
-    letter-spacing:6px;
-    text-align:center;
-    width:220px;
-    border:none;
-    border-radius:12px;
-    outline:none;
-    background:rgba(255,255,255,0.08);
-    color:#fff;
-    border:1px solid rgba(255,150,200,0.3);
-    box-shadow:0 0 25px rgba(255,105,180,0.2);
-  }
-  #pwInput::placeholder { color:rgba(255,255,255,0.4); letter-spacing:2px; }
-  #pwBtn {
-    padding:12px 30px;
-    border:none;
-    border-radius:30px;
-    background:linear-gradient(135deg,#ff6fa5,#1b3a6b);
-    color:white;
-    font-size:1rem;
-    cursor:pointer;
-    box-shadow:0 4px 20px rgba(255,105,165,0.35);
-    transition: transform 0.2s ease;
-  }
-  #pwBtn:hover { transform: scale(1.05); }
-  .shake { animation: shake 0.4s; }
-  @keyframes shake {
-    0%,100% { transform:translateX(0); }
-    25% { transform:translateX(-10px); }
-    75% { transform:translateX(10px); }
-  }
-  #hint { color:rgba(255,255,255,0.35); font-size:0.85rem; }
 
-  /* ---------- FLOWER SCENE ---------- */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 180, 210, 0.2);
+    border-radius: 28px;
+    padding: 40px 32px;
+    display: flex; flex-direction: column; align-items: center; gap: 22px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 100, 160, 0.15);
+    max-width: 380px; width: 100%;
+    animation: cardFloat 4s ease-in-out infinite alternate;
+  }
+  @keyframes cardFloat {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-10px); }
+  }
+
+  .heart-seal {
+    position: relative;
+    font-size: 3rem;
+    filter: drop-shadow(0 0 18px rgba(255, 40, 120, 0.8));
+    animation: heartBeat 1.3s ease-in-out infinite;
+    cursor: pointer;
+  }
+  @keyframes heartBeat {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.25); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.15); }
+  }
+
+  .lockTitle {
+    color: #ffdeed;
+    font-size: 1.1rem;
+    font-weight: 300;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .lockTitle strong {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.2rem;
+    color: #ff7bb0;
+    display: block;
+    margin-bottom: 4px;
+    text-shadow: 0 0 15px rgba(255, 123, 176, 0.5);
+  }
+
+  .input-wrap { width: 100%; }
+
+  #pwInput {
+    width: 100%;
+    padding: 16px 20px;
+    font-size: 1.5rem;
+    letter-spacing: 8px;
+    text-align: center;
+    border: none;
+    border-radius: 16px;
+    outline: none;
+    background: rgba(10, 2, 20, 0.4);
+    color: #fff;
+    border: 1px solid rgba(255, 105, 180, 0.35);
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+  }
+  #pwInput:focus {
+    border-color: #ff529a;
+    box-shadow: 0 0 25px rgba(255, 82, 154, 0.5), inset 0 2px 5px rgba(0,0,0,0.5);
+  }
+  #pwInput::placeholder { 
+    color: rgba(255, 255, 255, 0.35); 
+    letter-spacing: 3px; 
+    font-size: 0.95rem;
+  }
+
+  #pwBtn {
+    width: 100%;
+    padding: 15px 0;
+    border: none;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #ff4081 0%, #b388ff 100%);
+    color: white;
+    font-size: 1.05rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(255, 64, 129, 0.45);
+    transition: all 0.3s ease;
+  }
+  #pwBtn:hover { 
+    transform: translateY(-3px) scale(1.02); 
+    box-shadow: 0 12px 30px rgba(255, 64, 129, 0.65);
+  }
+  #pwBtn:active { transform: translateY(1px); }
+
+  .shake { animation: shake 0.4s ease-in-out; }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-12px); }
+    40%, 80% { transform: translateX(12px); }
+  }
+
+  #hint { 
+    color: rgba(255, 255, 255, 0.45); 
+    font-size: 0.82rem;
+    letter-spacing: 0.5px;
+  }
+
+  /* ---------- FLOWER & HEART SCENE ---------- */
   #scene {
-    position:fixed; inset:0;
-    display:flex; align-items:flex-end; justify-content:center;
-    overflow:hidden;
+    position: fixed; inset: 0;
+    display: flex; align-items: flex-end; justify-content: center;
+    overflow: hidden;
+    z-index: 1;
   }
-  .stars {
-    position:absolute; inset:0;
-    background-image:
-      radial-gradient(1px 1px at 20% 30%, white, transparent),
-      radial-gradient(1px 1px at 70% 60%, white, transparent),
-      radial-gradient(1.5px 1.5px at 40% 80%, white, transparent),
-      radial-gradient(1px 1px at 85% 20%, white, transparent),
-      radial-gradient(1.5px 1.5px at 60% 10%, white, transparent),
-      radial-gradient(1px 1px at 10% 65%, white, transparent),
-      radial-gradient(1px 1px at 90% 85%, white, transparent);
-    opacity:0.6;
-    animation: twinkle 4s ease-in-out infinite alternate;
-  }
-  @keyframes twinkle { from{opacity:0.3;} to{opacity:0.8;} }
 
   .ground {
-    position:absolute; bottom:0; left:0; right:0; height:14%;
-    background:linear-gradient(to top, #0d0620, transparent);
+    position: absolute; bottom: 0; left: 0; right: 0; height: 18%;
+    background: linear-gradient(to top, #0c0214 20%, rgba(12, 2, 20, 0.8) 60%, transparent);
+    z-index: 2;
   }
 
   .flowerWrap {
-    position:relative;
-    display:flex; flex-direction:column; align-items:center;
-    margin-bottom:8%;
+    position: relative;
+    display: flex; flex-direction: column; align-items: center;
+    margin-bottom: 7vh;
+    z-index: 3;
   }
 
+  /* Stem */
   .stem {
-    width:6px;
-    height:0px;
-    background:linear-gradient(to top, #2e7d32, #4caf50);
-    border-radius:4px;
-    animation: growStem 1.6s ease-out forwards;
-    animation-delay: 0.3s;
+    width: 8px;
+    height: 0px;
+    background: linear-gradient(to top, #143d16, #388e3c, #66bb6a);
+    border-radius: 6px;
+    box-shadow: 0 0 12px rgba(76, 175, 80, 0.4);
+    animation: growStem 2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    animation-delay: 0.4s;
   }
   @keyframes growStem {
-    to { height:180px; }
+    to { height: 220px; }
   }
 
+  /* Leaves */
   .leaf {
-    position:absolute;
-    width:34px; height:16px;
-    background:#43a047;
-    border-radius:50% 50% 50% 50% / 90% 90% 10% 10%;
-    opacity:0;
-    animation: leafIn 0.8s ease-out forwards;
+    position: absolute;
+    width: 46px; height: 22px;
+    background: linear-gradient(135deg, #1b5e20, #4caf50);
+    border-radius: 50% 50% 50% 50% / 80% 80% 20% 20%;
+    opacity: 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
   }
-  .leafLeft { bottom:70px; left:-24px; transform:rotate(35deg); animation-delay:1.4s; }
-  .leafRight { bottom:100px; right:-24px; transform:rotate(-35deg) scaleX(-1); animation-delay:1.6s; }
-  @keyframes leafIn {
-    from { opacity:0; transform:scale(0) rotate(0deg); }
-    to   { opacity:1; }
+  .leafLeft { 
+    bottom: 90px; left: -36px; 
+    transform-origin: right center;
+    animation: leafInLeft 1s ease-out forwards; 
+    animation-delay: 1.5s; 
+  }
+  .leafRight { 
+    bottom: 135px; right: -36px; 
+    transform-origin: left center;
+    animation: leafInRight 1s ease-out forwards; 
+    animation-delay: 1.7s; 
   }
 
+  @keyframes leafInLeft {
+    from { opacity: 0; transform: scale(0) rotate(-30deg); }
+    to   { opacity: 1; transform: scale(1) rotate(25deg); }
+  }
+  @keyframes leafInRight {
+    from { opacity: 0; transform: scale(0) rotate(30deg); }
+    to   { opacity: 1; transform: scale(1) rotate(-25deg); }
+  }
+
+  /* Flower Head */
   .bud {
-    position:relative;
-    width:0; height:0;
-    margin-bottom:-4px;
+    position: relative;
+    width: 0; height: 0;
+    margin-bottom: -2px;
   }
 
+  /* Heart-shaped / Curved Rose Petal Styling */
   .petal {
-    position:absolute;
-    bottom:0; left:50%;
-    width:26px; height:70px;
-    background:linear-gradient(to top, #ffd6ea, #ff8fc0);
-    border-radius:50% 50% 50% 50% / 65% 65% 35% 35%;
-    transform-origin:bottom center;
-    opacity:0;
-    box-shadow: inset 0 -10px 15px rgba(255,120,180,0.3);
-    animation: bloom 1.4s ease-out forwards;
-  }
-  @keyframes bloom {
-    0%   { opacity:0; transform: translateX(-50%) scale(0.15) rotate(var(--rot)); }
-    60%  { opacity:1; }
-    100% { opacity:1; transform: translateX(-50%) scale(1) rotate(var(--rot)) translateY(var(--spread)); }
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform-origin: bottom center;
+    opacity: 0;
+    border-radius: 50% 50% 50% 50% / 80% 80% 20% 20%;
+    box-shadow: inset 0 -15px 22px rgba(200, 20, 100, 0.5), 0 0 18px rgba(255, 140, 190, 0.5);
+    animation: bloom 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
+  /* Outer Petals */
+  .petal.outer {
+    width: 36px; height: 95px;
+    background: linear-gradient(to top, #e91e63 0%, #ff6090 60%, #fff0f5 100%);
+  }
+
+  /* Middle Petals */
+  .petal.mid {
+    width: 28px; height: 80px;
+    background: linear-gradient(to top, #d81b60 0%, #ff4081 70%, #ffffff 100%);
+  }
+
+  /* Inner Petals */
+  .petal.inner {
+    width: 20px; height: 62px;
+    background: linear-gradient(to top, #c2185b 0%, #ff80ab 80%, #fff 100%);
+  }
+
+  @keyframes bloom {
+    0%   { opacity: 0; transform: translateX(-50%) scale(0.1) rotate(var(--rot)); }
+    50%  { opacity: 0.95; }
+    100% { opacity: 1; transform: translateX(-50%) scale(1) rotate(var(--rot)) translateY(var(--spread)); }
+  }
+
+  /* Pulsing Stamen Center */
   .center {
-    position:absolute;
-    bottom:0; left:50%;
-    width:22px; height:22px;
-    background:radial-gradient(circle, #ffe066, #1b3a6b);
-    border-radius:50%;
-    transform:translate(-50%, 50%) scale(0);
-    animation: centerPop 0.6s ease-out forwards;
-    animation-delay:2.6s;
-    box-shadow:0 0 20px rgba(255,150,190,0.6);
-    z-index:2;
+    position: absolute;
+    bottom: 0; left: 50%;
+    width: 30px; height: 30px;
+    background: radial-gradient(circle, #ffffff 0%, #ffeb3b 40%, #ff9800 100%);
+    border-radius: 50%;
+    transform: translate(-50%, 50%) scale(0);
+    animation: centerPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, heartPulseCenter 1.5s ease-in-out infinite alternate;
+    animation-delay: 2.8s, 3.6s;
+    box-shadow: 0 0 30px rgba(255, 235, 59, 0.9), 0 0 50px rgba(255, 64, 129, 0.7);
+    z-index: 5;
   }
   @keyframes centerPop {
-    to { transform:translate(-50%, 50%) scale(1); }
+    to { transform: translate(-50%, 50%) scale(1); }
+  }
+  @keyframes heartPulseCenter {
+    0% { transform: translate(-50%, 50%) scale(1); box-shadow: 0 0 25px rgba(255, 235, 59, 0.8); }
+    100% { transform: translate(-50%, 50%) scale(1.2); box-shadow: 0 0 45px rgba(255, 64, 129, 1); }
   }
 
+  /* Romantic Message Card */
   .message {
-    position:absolute;
-    top:12%;
-    left:50%;
-    transform:translate(-50%, -20px);
-    color:#ffe3f1;
-    text-align:center;
-    opacity:0;
-    text-shadow:0 0 20px rgba(255,110,180,0.6);
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -20px);
+    color: #ffe3f1;
+    text-align: center;
+    opacity: 0;
     animation: msgIn 1.5s ease-out forwards;
-    animation-delay:3.2s;
-    width:90%;
-    max-width:500px;
+    animation-delay: 3.4s;
+    width: 90%;
+    max-width: 520px;
+    z-index: 4;
+    padding: 0 10px;
   }
   @keyframes msgIn {
-    to { opacity:1; transform:translate(-50%, 0); }
-  }
-  .message h1 {
-    font-size:1.8rem;
-    font-weight:600;
-    margin-bottom:10px;
-  }
-  .message p {
-    font-size:1.3rem;
-    opacity:0.9;
+    to { opacity: 1; transform: translate(-50%, 0); }
   }
 
-  .petal-fall {
-    position:absolute;
-    top:-20px;
-    font-size:18px;
-    opacity:0.8;
-    animation: fall linear infinite;
-    pointer-events:none;
+  .message h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3.6rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    background: linear-gradient(135deg, #ffffff 20%, #ff85b3 60%, #e040fb 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 20px rgba(255, 80, 150, 0.6));
   }
-  @keyframes fall {
-    to { transform: translateY(110vh) rotate(360deg); }
+  .message p {
+    font-size: 1.15rem;
+    font-weight: 300;
+    opacity: 0.95;
+    color: #f7d8eb;
+    letter-spacing: 0.5px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .heart-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 140, 190, 0.4);
+    border-radius: 30px;
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(255, 64, 129, 0.3);
+    transition: all 0.3s ease;
+  }
+  .heart-btn:hover {
+    background: rgba(255, 64, 129, 0.25);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 10px 25px rgba(255, 64, 129, 0.5);
+  }
+
+  /* Floating Petals & Hearts */
+  .falling-element {
+    position: absolute;
+    top: -30px;
+    pointer-events: none;
+    z-index: 3;
+    animation: fallAndSway linear infinite;
+  }
+
+  @keyframes fallAndSway {
+    0% {
+      transform: translateY(0) translateX(0) rotate(0deg);
+      opacity: 0;
+    }
+    10% { opacity: 0.9; }
+    90% { opacity: 0.9; }
+    100% {
+      transform: translateY(105vh) translateX(var(--sway)) rotate(var(--rot));
+      opacity: 0;
+    }
+  }
+
+  /* Burst particles */
+  .burst-heart {
+    position: fixed;
+    pointer-events: none;
+    z-index: 99;
+    font-size: 20px;
+    animation: burstOut 1.2s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+  }
+  @keyframes burstOut {
+    0% { transform: translate(0, 0) scale(0.5); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(1.4) rotate(var(--rot)); opacity: 0; }
   }
 </style>
 </head>
 <body>
 
-  <div id="lockScreen">
-    <div class="lockTitle">🔒 this one's just for you...<br>enter the password</div>
-    <input type="password" id="pwInput" placeholder="• • • •" maxlength="10" inputmode="numeric">
-    <button id="pwBtn">Unlock</button>
-    <div id="hint">hint: you already know it 💭</div>
+  <!-- Ambient Cosmos Background -->
+  <div class="bg-canvas">
+    <div class="heartbeat-aura"></div>
+    <div class="stars"></div>
   </div>
 
+  <!-- Password Screen -->
+  <div id="lockScreen">
+    <div class="glass-card">
+      <div class="heart-seal" id="heartSeal">💖</div>
+      <div class="lockTitle">
+        <strong>ONLY YOU DESERVE THIS</strong>
+        Enter the password please
+      </div>
+      <div class="input-wrap">
+        <input type="password" id="pwInput" placeholder="• • • •" maxlength="10" inputmode="numeric" autocomplete="off">
+      </div>
+      <button id="pwBtn">Open it ✨</button>
+      <div id="hint">hint: you already know it 💭</div>
+    </div>
+  </div>
+
+  <!-- Flower Scene -->
   <div id="scene" style="display:none;">
-    <div class="stars"></div>
     <div class="ground"></div>
+
     <div class="flowerWrap">
       <div class="bud" id="bud"></div>
       <div class="stem" id="stem">
@@ -230,8 +441,11 @@
         <div class="leaf leafRight"></div>
       </div>
     </div>
+
     <div class="message">
-      <h1>For you...</h1>
+      <h1>For You...</h1>
+      <p>In a world full of noise, you are my favorite melody. My heart blooms only for you 💖</p>
+      <button class="heart-btn" id="surpriseBtn">Touch My Heart ❤️</button>
     </div>
   </div>
 
@@ -243,54 +457,154 @@
   const scene = document.getElementById('scene');
   const bud = document.getElementById('bud');
 
+  // Romantic harmonic chime using Web Audio API
+  function playRomanticMelody() {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      
+      const chord = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99]; // C Major Romantic Arpeggio
+      chord.forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        
+        const startTime = ctx.currentTime + idx * 0.18;
+        gain.gain.setValueAtTime(0, startTime);
+        gain.gain.linearRampToValueAtTime(0.18, startTime + 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 1.6);
+        
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        
+        osc.start(startTime);
+        osc.stop(startTime + 1.6);
+      });
+    } catch (e) { console.log(e); }
+  }
+
+  // Heartburst effect when unlocking or clicking surprise
+  function spawnHeartBurst(x, y, count = 24) {
+    const hearts = ['💖', '❤️', '🌸', '✨', '💕', '💗'];
+    for (let i = 0; i < count; i++) {
+      const h = document.createElement('div');
+      h.className = 'burst-heart';
+      h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+      h.style.left = x + 'px';
+      h.style.top = y + 'px';
+      
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 60 + Math.random() * 140;
+      const tx = Math.cos(angle) * dist;
+      const ty = Math.sin(angle) * dist;
+      const rot = (Math.random() - 0.5) * 360;
+      
+      h.style.setProperty('--tx', tx + 'px');
+      h.style.setProperty('--ty', ty + 'px');
+      h.style.setProperty('--rot', rot + 'deg');
+      
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 1200);
+    }
+  }
+
   function tryUnlock() {
     if (pwInput.value.trim() === correctPassword) {
+      const rect = pwBtn.getBoundingClientRect();
+      spawnHeartBurst(rect.left + rect.width/2, rect.top + rect.height/2, 30);
+      playRomanticMelody();
+      
       lockScreen.classList.add('hide');
       setTimeout(() => {
         lockScreen.style.display = 'none';
         scene.style.display = 'flex';
         buildFlower();
-        spawnFallingPetals();
+        spawnFallingElements();
       }, 1100);
     } else {
-      lockScreen.querySelector('.lockTitle').classList.remove('shake');
-      void lockScreen.offsetWidth; // restart animation
-      lockScreen.querySelector('.lockTitle').classList.add('shake');
+      const card = lockScreen.querySelector('.glass-card');
+      card.classList.remove('shake');
+      void card.offsetWidth;
+      card.classList.add('shake');
       pwInput.value = '';
-      pwInput.placeholder = 'wrong password, try again 🥺';
+      pwInput.placeholder = 'wrong key to my heart 🥺';
     }
   }
 
   pwBtn.addEventListener('click', tryUnlock);
   pwInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') tryUnlock(); });
 
+  document.getElementById('surpriseBtn').addEventListener('click', (e) => {
+    const rect = e.target.getBoundingClientRect();
+    spawnHeartBurst(rect.left + rect.width/2, rect.top + rect.height/2, 35);
+    playRomanticMelody();
+  });
+
   function buildFlower() {
-    const petalCount = 8;
-    for (let i = 0; i < petalCount; i++) {
+    // Outer Petal Layer (12 petals)
+    const outerCount = 12;
+    for (let i = 0; i < outerCount; i++) {
       const petal = document.createElement('div');
-      petal.className = 'petal';
-      const angle = (360 / petalCount) * i;
+      petal.className = 'petal outer';
+      const angle = (360 / outerCount) * i;
       petal.style.setProperty('--rot', angle + 'deg');
-      petal.style.setProperty('--spread', -8 + 'px');
-      petal.style.animationDelay = (1.9 + i * 0.07) + 's';
+      petal.style.setProperty('--spread', -12 + 'px');
+      petal.style.animationDelay = (1.8 + i * 0.07) + 's';
       bud.appendChild(petal);
     }
+
+    // Middle Petal Layer (8 petals)
+    const midCount = 8;
+    for (let i = 0; i < midCount; i++) {
+      const petal = document.createElement('div');
+      petal.className = 'petal mid';
+      const angle = (360 / midCount) * i + 15;
+      petal.style.setProperty('--rot', angle + 'deg');
+      petal.style.setProperty('--spread', -6 + 'px');
+      petal.style.animationDelay = (2.2 + i * 0.07) + 's';
+      bud.appendChild(petal);
+    }
+
+    // Inner Petal Layer (6 petals)
+    const innerCount = 6;
+    for (let i = 0; i < innerCount; i++) {
+      const petal = document.createElement('div');
+      petal.className = 'petal inner';
+      const angle = (360 / innerCount) * i + 30;
+      petal.style.setProperty('--rot', angle + 'deg');
+      petal.style.setProperty('--spread', -2 + 'px');
+      petal.style.animationDelay = (2.5 + i * 0.07) + 's';
+      bud.appendChild(petal);
+    }
+
+    // Pulsing Stamen Center
     const center = document.createElement('div');
     center.className = 'center';
     bud.appendChild(center);
   }
 
-  function spawnFallingPetals() {
+  function spawnFallingElements() {
+    const items = ['🌸', '💖', '✨', '💕', '🌹'];
     setInterval(() => {
-      const p = document.createElement('div');
-      p.className = 'petal-fall';
-      p.textContent = '🌸';
-      p.style.left = Math.random() * 100 + 'vw';
-      p.style.animationDuration = (6 + Math.random() * 6) + 's';
-      p.style.fontSize = (10 + Math.random() * 14) + 'px';
-      document.body.appendChild(p);
-      setTimeout(() => p.remove(), 13000);
-    }, 900);
+      const el = document.createElement('div');
+      el.className = 'falling-element';
+      el.textContent = items[Math.floor(Math.random() * items.length)];
+      
+      const duration = 6 + Math.random() * 6;
+      const sway = (Math.random() - 0.5) * 180;
+      const rot = Math.random() * 720;
+      
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.fontSize = (14 + Math.random() * 16) + 'px';
+      el.style.setProperty('--sway', sway + 'px');
+      el.style.setProperty('--rot', rot + 'deg');
+      el.style.animationDuration = duration + 's';
+      
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), duration * 1000);
+    }, 500);
   }
 </script>
 
